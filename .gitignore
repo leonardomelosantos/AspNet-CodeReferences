@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/WebAPI/JWT/webapi-aspnetcore-reference/obj
+/WebAPI/JWT/webapi-aspnetcore-reference/bin
+/WebAPI/JWT/webapi-aspnetcore-reference/.vs
