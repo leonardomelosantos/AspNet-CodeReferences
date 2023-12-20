@@ -1,4 +1,4 @@
-namespace webapi_aspnetcore_reference
+namespace webapi_aspnetcore_reference.Models
 {
     public class WeatherForecast
     {

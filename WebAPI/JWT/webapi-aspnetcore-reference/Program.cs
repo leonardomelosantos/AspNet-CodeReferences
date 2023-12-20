@@ -18,8 +18,8 @@ ConfigurationManager configuration = builder.Configuration;
 // Starts here lines to configure WebAPI Authentication API
 
 // For Entity Framework (SQL Server)
-// builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMemoryCache(null) );
+//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
+=builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMemoryCache(null) );
 
 // For Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()

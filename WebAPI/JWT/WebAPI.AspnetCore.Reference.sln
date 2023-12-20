@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapi-aspnetcore-reference", "webapi-aspnetcore-reference\webapi-aspnetcore-reference.csproj", "{CA29B82C-B274-4E87-AE0E-9789606E7D9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.AspnetCore.Reference", "webapi-aspnetcore-reference\WebAPI.AspnetCore.Reference.csproj", "{CA29B82C-B274-4E87-AE0E-9789606E7D9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

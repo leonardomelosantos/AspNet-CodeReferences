@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using webapi_aspnetcore_reference.Models;
 
 namespace webapi_aspnetcore_reference.Controllers
 {
