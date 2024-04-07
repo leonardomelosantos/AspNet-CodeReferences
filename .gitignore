@@ -8,3 +8,8 @@
 /WebAPI/JWT/webapi-aspnetcore-reference/webapi-aspnetcore-reference.csproj.user
 /.vs
 /WebAPI/JWT/.vs
+/aspnetcore/WebAPI_JWT/.vs
+/aspnetcore/WebAPI_JWT/webapi-aspnetcore-reference/obj
+/aspnet/ObservabilitySample/bin
+/aspnet/ObservabilitySample/obj/Debug
+/aspnet/ObservabilitySample/.vs/ObservabilitySample
