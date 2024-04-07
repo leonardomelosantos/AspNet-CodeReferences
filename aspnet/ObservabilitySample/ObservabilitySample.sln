@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObservabilitySample", "ObservabilitySample.csproj", "{034802A3-5C32-443B-8630-DE5C96530883}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObservabilitySample", "UI\ObservabilitySample.csproj", "{034802A3-5C32-443B-8630-DE5C96530883}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{BDF08E0F-E07D-44AC-8E0F-467EDD5A6FB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObservabilitySample.Domain.Service", "Domain\ObservabilitySample.Domain.Service\ObservabilitySample.Domain.Service.csproj", "{D4A03B6F-0BF7-44DD-8BD6-BD29810F3487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{034802A3-5C32-443B-8630-DE5C96530883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{034802A3-5C32-443B-8630-DE5C96530883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{034802A3-5C32-443B-8630-DE5C96530883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A03B6F-0BF7-44DD-8BD6-BD29810F3487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A03B6F-0BF7-44DD-8BD6-BD29810F3487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A03B6F-0BF7-44DD-8BD6-BD29810F3487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A03B6F-0BF7-44DD-8BD6-BD29810F3487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D4A03B6F-0BF7-44DD-8BD6-BD29810F3487} = {BDF08E0F-E07D-44AC-8E0F-467EDD5A6FB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {57DC9154-DD79-42E1-B660-675BFEAF04F0}
