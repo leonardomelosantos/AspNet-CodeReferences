@@ -1,3 +1,4 @@
+using ObservabilitySample.Domain.Service;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
@@ -45,7 +46,9 @@ namespace ObservabilitySample.WebApp
         {
             var builder = Sdk.CreateTracerProviderBuilder()
                                  .AddAspNetInstrumentation()
-                                 .AddHttpClientInstrumentation();
+                                 .AddHttpClientInstrumentation()
+                                 .AddSource(CustomMetrics.greeterActivitySource.Name)
+                                 ;
 
             switch (GetTracerExporterType())
             {
@@ -90,7 +93,10 @@ namespace ObservabilitySample.WebApp
             // https://github.com/open-telemetry/opentelemetry-dotnet/issues/2994
 
             var meterBuilder = Sdk.CreateMeterProviderBuilder()
-                 .AddAspNetInstrumentation();
+                 .AddAspNetInstrumentation()
+                 .AddHttpClientInstrumentation()
+                 .AddMeter(CustomMetrics.greeterMeter.Name)
+                 ;
 
             switch (GetMetricExporterType())
             {
