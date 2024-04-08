@@ -11,7 +11,11 @@
 /aspnetcore/WebAPI_JWT/.vs
 /aspnetcore/WebAPI_JWT/webapi-aspnetcore-reference/obj
 /aspnetcore/WebAPI_JWT/webapi-aspnetcore-reference/bin
-/aspnet/ObservabilitySample/bin
-/aspnet/ObservabilitySample/obj
+/aspnet/ObservabilitySample/UI/bin
+/aspnet/ObservabilitySample/UI/obj
 /aspnet/ObservabilitySample/.vs
-/aspnet/ObservabilitySample/packages
+/aspnet/ObservabilitySample/UI/packages
+
+bin/
+obj/
+packages/

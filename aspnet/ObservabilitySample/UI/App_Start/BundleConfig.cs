@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace ObservabilitySample
+namespace ObservabilitySample.WebApp
 {
     public class BundleConfig
     {
