@@ -46,9 +46,7 @@ namespace ObservabilitySample.WebApp
         {
             var builder = Sdk.CreateTracerProviderBuilder()
                                  .AddAspNetInstrumentation()
-                                 .AddHttpClientInstrumentation()
-                                 .AddSource(CustomMetrics.greeterActivitySource.Name)
-                                 ;
+                                 .AddSource(CustomMetrics.greeterActivitySource.Name);
 
             switch (GetTracerExporterType())
             {
@@ -94,9 +92,7 @@ namespace ObservabilitySample.WebApp
 
             var meterBuilder = Sdk.CreateMeterProviderBuilder()
                  .AddAspNetInstrumentation()
-                 .AddHttpClientInstrumentation()
-                 .AddMeter(CustomMetrics.greeterMeter.Name)
-                 ;
+                 .AddMeter(CustomMetrics.greeterMeter.Name);
 
             switch (GetMetricExporterType())
             {
@@ -107,8 +103,10 @@ namespace ObservabilitySample.WebApp
                     });
                     break;
                 case "PROMETHEUS":
-                    // http://localhost:9464/metrics
-                    meterBuilder.AddPrometheusHttpListener();
+                    meterBuilder.AddPrometheusHttpListener( ); // Default: http://localhost:9464/metrics
+
+                    // Install Prometheus (default port is 9090) and add http://localhost:9464/metrics in "targets list"
+                    // Install Graphana from Docker and add Prometheus: http://host.docker.internal:9090
                     break;
                 default:
                     meterBuilder.AddConsoleExporter((exporterOptions, metricReaderOptions) =>

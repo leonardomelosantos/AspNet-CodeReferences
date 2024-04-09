@@ -19,6 +19,7 @@ namespace ObservabilitySample.WebApp.Controllers
 
         public HomeController()
         {
+            
             _countGreetings = CustomMetrics.greeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
             // Custom ActivitySource for the application
             _greeterActivitySource = CustomMetrics.greeterActivitySource;
