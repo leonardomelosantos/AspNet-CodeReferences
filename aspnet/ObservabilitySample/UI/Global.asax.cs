@@ -46,7 +46,7 @@ namespace ObservabilitySample.WebApp
         {
             var builder = Sdk.CreateTracerProviderBuilder()
                                  .AddAspNetInstrumentation()
-                                 .AddSource(CustomMetrics.greeterActivitySource.Name);
+                                 .AddSource(CustomMetricsAndActivities.GreeterActivitySource.Name);
 
             switch (GetTracerExporterType())
             {
@@ -92,7 +92,7 @@ namespace ObservabilitySample.WebApp
 
             var meterBuilder = Sdk.CreateMeterProviderBuilder()
                  .AddAspNetInstrumentation()
-                 .AddMeter(CustomMetrics.greeterMeter.Name);
+                 .AddMeter(CustomMetricsAndActivities.GreeterMeter.Name);
 
             switch (GetMetricExporterType())
             {

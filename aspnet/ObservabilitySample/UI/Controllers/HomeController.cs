@@ -10,19 +10,20 @@ using Microsoft.Extensions.Logging;
 
 namespace ObservabilitySample.WebApp.Controllers
 {
+    /// <summary>
+    /// Draft / study.
+    /// </summary>
     public class HomeController : Controller
     {
         private Counter<int> _countGreetings;
         private ActivitySource _greeterActivitySource;
 
-        //Meter greeterMeter = new Meter("OtPrGrYa.Example", "1.0.0");
-
         public HomeController()
         {
-            
-            _countGreetings = CustomMetrics.greeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
+            // Metrics
+            _countGreetings = CustomMetricsAndActivities.GreeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
             // Custom ActivitySource for the application
-            _greeterActivitySource = CustomMetrics.greeterActivitySource;
+            _greeterActivitySource = CustomMetricsAndActivities.GreeterActivitySource;
         }
 
         public ActionResult Index()
@@ -38,10 +39,7 @@ namespace ObservabilitySample.WebApp.Controllers
 
                 // Add a tag to the Activity
                 activity?.SetTag("greeting", "Hello World!");
-                // Custom metrics for the application
-
             }
-
             return View();
         }
 
