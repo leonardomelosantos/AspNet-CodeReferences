@@ -1,10 +1,11 @@
 using ObservabilitySample.Domain.Service;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Instrumentation.AspNet;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using System;
-using System.Configuration;
+using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -36,97 +37,75 @@ namespace ObservabilitySample.WebApp
 
         private void InitializeOpenTelemetryConfigurations()
         {
-            this.InitializeOpenTelemetryTracer();
-            this.InitializeOpenTelemetryMetrics();
+            string jaegerNameIdentifier = "jaeger-all-in-one";
+            this.InitializeOpenTelemetryTracer(jaegerNameIdentifier);
+            this.InitializeOpenTelemetryMetrics(jaegerNameIdentifier);
         }
 
         #region Tracer
 
-        private void InitializeOpenTelemetryTracer()
+        private void InitializeOpenTelemetryTracer(string serviceNameIdentifier)
         {
             var builder = Sdk.CreateTracerProviderBuilder()
-                                 .AddAspNetInstrumentation()
-                                 .AddSource(CustomMetricsAndActivities.GreeterActivitySource.Name);
+                .ConfigureResource(r => r.AddService(serviceNameIdentifier)) // It's very important set this service name when using Jaeger/OTLP.
+                .AddAspNetInstrumentation(SetAspNetInstrumentationOptions)
+                // Put here all Activities names created by you.
+                .AddSource(CustomMetricsAndActivities.GreeterActivitySource.Name);
 
-            switch (GetTracerExporterType())
-            {
-                //case "ZIPKIN":
-                //    builder.AddZipkinExporter(zipkinOptions =>
-                //    {
-                //        zipkinOptions.Endpoint = new Uri(ConfigurationManager.AppSettings["ZipkinEndpoint"]);
-                //    });
-                //    break;
-                case "OTLP":
-                    builder.AddOtlpExporter(otlpOptions =>
-                    {
-                        otlpOptions.Endpoint = new Uri(GetTracerUrlForOltpExporter());
-                    });
-                    break;
-                default:
-                    builder.AddConsoleExporter(options => options.Targets = ConsoleExporterOutputTargets.Debug);
-                    break;
-            }
+            // If you want OTLP Exporter.
+            builder.AddOtlpExporter(); // By configuring using (opts) doesn't work. We need to configure in Environment Variables.
+
+            builder.AddConsoleExporter(options => options.Targets = ConsoleExporterOutputTargets.Debug);
 
             this.tracerProvider = builder.Build();
         }
 
-        private static string GetTracerUrlForOltpExporter()
+        private void SetAspNetInstrumentationOptions(AspNetTraceInstrumentationOptions options)
         {
-            return ConfigurationManager.AppSettings["Config.Observability.OpenTelemetry.TracerOtlpEndpoint"];
+            options.Enrich = EnrichApsNetInstrumentation;
         }
 
-        private static string GetTracerExporterType()
+        private void EnrichApsNetInstrumentation(Activity activity, string arg2, object httpContext)
         {
-            return ConfigurationManager.AppSettings["Config.Observability.OpenTelemetry.UseTracerExporter"].ToUpperInvariant();
+            if (httpContext is System.Web.HttpRequest request)
+            {
+                string correctRouteDescription = $"{request.HttpMethod} {request.FilePath}";
+                activity.SetTag("http.route", correctRouteDescription);
+                activity.DisplayName = correctRouteDescription;
+            }
         }
 
         #endregion
 
         #region Metrics
 
-        private void InitializeOpenTelemetryMetrics()
+        private void InitializeOpenTelemetryMetrics(string theServiceNameIdentifier)
         {
             // Metrics
             // Note: Tracerprovider is needed for metrics to work
             // https://github.com/open-telemetry/opentelemetry-dotnet/issues/2994
 
             var meterBuilder = Sdk.CreateMeterProviderBuilder()
+                .ConfigureResource(r => r.AddService(theServiceNameIdentifier))
                  .AddAspNetInstrumentation()
-                 .AddMeter(CustomMetricsAndActivities.GreeterMeter.Name);
+                 // Put here all Metric names created by you.
+                 .AddMeter(CustomMetricsAndActivities.GreeterMeter.Name)
+                 .AddMeter(CustomMetricsAndActivities.SegundaMetrica.Name);
 
-            switch (GetMetricExporterType())
-            {
-                case "OTLP":
-                    meterBuilder.AddOtlpExporter(otlpOptions =>
-                    {
-                        otlpOptions.Endpoint = new Uri(GetMetricsUrlForOltpExporter());
-                    });
-                    break;
-                case "PROMETHEUS":
-                    meterBuilder.AddPrometheusHttpListener( ); // Default: http://localhost:9464/metrics
+            // If you want OTLP Exporter.
+            //meterBuilder.AddOtlpExporter(); // By configuring using (opts) doesn't work. We need to configure in Environment Variables.
 
-                    // Install Prometheus (default port is 9090) and add http://localhost:9464/metrics in "targets list"
-                    // Install Graphana from Docker and add Prometheus: http://host.docker.internal:9090
-                    break;
-                default:
-                    meterBuilder.AddConsoleExporter((exporterOptions, metricReaderOptions) =>
-                    {
-                        exporterOptions.Targets = ConsoleExporterOutputTargets.Debug;
-                    });
-                    break;
-            }
+            meterBuilder.AddPrometheusHttpListener(); // Default: http://localhost:9464/metrics
+                                                      // 1) Install Prometheus (default port is 9090 to use UI) and there add http://localhost:9464/metrics in "targets list"
+                                                      // 2) Install Graphana from Docker and add Prometheus: http://host.docker.internal:9090
+
+            // If you want console exporter to inspect during the development stage.
+            //meterBuilder.AddConsoleExporter((exporterOptions, metricReaderOptions) =>
+            //{
+            //    exporterOptions.Targets = ConsoleExporterOutputTargets.Debug;
+            //});
 
             this.meterProvider = meterBuilder.Build();
-        }
-
-        private static string GetMetricsUrlForOltpExporter()
-        {
-            return ConfigurationManager.AppSettings["Config.Observability.OpenTelemetry.MetricsOtlpEndpoint"];
-        }
-
-        private static string GetMetricExporterType()
-        {
-            return ConfigurationManager.AppSettings["Config.Observability.OpenTelemetry.UseMetricsExporter"].ToUpperInvariant();
         }
 
         #endregion
